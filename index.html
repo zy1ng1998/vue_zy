@@ -1,50 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="./vue.js"></script>
-    <!-- 引入vue -->
 </head>
+
 <body>
 
-<div class="demo">
-    <!-- 被vue控制的区域我们称之为模板 -->
-    {{ height }}
-    {{ msg }}
-    {{ 123 }}
-    {{ 1 + 1 }}
-    {{ 1 + 1 == 2 ? true : false }}
-    {{ {age:18, name: "章"} }}
+    <div class="demo">
+        {{ msg }}
 
-    
-
-</div>
+    </div>
 
     <script>
-
-    let vm = new Vue({
-        el:'.demo',
-        //控制class为demo的元素
-        data:{
-            height:160,
-            msg:"没吃早饭",
-            zy:{
-                age:10
+        let vm = new Vue({
+            el: '.demo',
+            data: {
+              msg:["火锅","烧烤","炸串"]
             }
-        }
-    })
-
-
-
-
-// let vm = new Vue()
-// vm.$mount('.demo')
-//控制class为demo的元素
-//与el比较，$mount为手动挂载
-
-        
+        })
+    vm.msg.push("奶茶")
+    //[ "火锅", "烧烤", "炸串", "奶茶" ]
+    //是响应式的
     </script>
 </body>
+
 </html>
