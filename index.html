@@ -9,23 +9,24 @@
 </head>
 
 <body>
-
-    <div class="demo">
-        {{ msg }}
-
-    </div>
-
+    <input type="text">
+    <button>点击</button>
+    <div class="demo" v-html="msg"></div>
     <script>
         let vm = new Vue({
-            el: '.demo',
+            el: ".demo",
             data: {
-              msg:["火锅","烧烤","炸串"]
+                msg: ""
             }
         })
-    vm.msg.push("奶茶")
-    //[ "火锅", "烧烤", "炸串", "奶茶" ]
-    //是响应式的
+        let oinp = document.getElementsByTagName("input")[0];
+        let btn = document.getElementsByTagName("button")[0];
+
+        btn.onclick = function () {
+            vm.msg = oinp.value
+        }
     </script>
+
 </body>
 
 </html>
