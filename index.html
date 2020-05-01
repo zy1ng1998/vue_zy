@@ -9,19 +9,24 @@
 </head>
 
 <body>
-    <div class="demo">
-        <div @click="alert('div')">
-            <button @click.stop="alert('button')">点击</button>
-        </div>
-    </div>
-
+    <ul class="demo">
+        <li v-for="(person,index) in persons" :key= "person">
+            {{ person }}
+            <input type="text">
+            <button @click="down(index)">下移</button>
+        </li>
+    </ul>
     <script>
         let vm = new Vue({
             el: ".demo",
-            data: {},
+            data: {
+                persons: ['张三', '李四', '王二', '麻子']
+            },
             methods: {
-                alert(str) {
-                    alert(str)
+                down(index) {
+                    let deleteEl = this.persons.splice(index, 1);
+                    //展开运算符
+                    this.persons.splice(index + 1, 0, ...deleteEl)
                 }
             }
         })
