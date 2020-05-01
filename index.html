@@ -9,24 +9,20 @@
 </head>
 
 <body>
-    <input type="text">
-    <button>点击</button>
-    <div class="demo" v-html="msg"></div>
+    <!-- 渲染阴天 -->
+    <div class="demo">
+        <div v-if= "type ==='B'">下雨了</div>
+        <div v-else-if ="type === 'C'" >晴天</div>
+        <div v-else>阴天</div>
+    </div>
     <script>
-        let vm = new Vue({
-            el: ".demo",
-            data: {
-                msg: ""
-            }
-        })
-        let oinp = document.getElementsByTagName("input")[0];
-        let btn = document.getElementsByTagName("button")[0];
-
-        btn.onclick = function () {
-            vm.msg = oinp.value
-        }
+   let vm = new Vue({
+       el:".demo",
+       data:{
+           type:"A"
+       }
+   })
     </script>
-
 </body>
 
 </html>

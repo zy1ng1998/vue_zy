@@ -442,4 +442,71 @@ vm.$delete是Vue.delete的别名
     </script>
 ```
 
+# 条件渲染
+
+## v-if
+- 用于条件性地渲染一块内容。这块内容只会在指令的表达式返回 truthy 值的时候被渲染。
+
+```js
+// 此时不会渲染 下雨了
+  <div class="demo">
+        <div v-if="show">下雨了</div>
+    </div>
+    <script>
+        let vm = new Vue({
+            el: ".demo",
+            data: {
+                show: "",
+            }
+
+        })
+    </script>
+```
+## v-else-if
+- v-if 的elseif块
+```js
+    <!-- 渲染晴天 -->
+    <div class="demo">
+        <div v-if= "type ==='B'">下雨了</div>
+        <div v-else-if ="type === 'A'" >晴天</div>
+    </div>
+    <script>
+   let vm = new Vue({
+       el:".demo",
+       data:{
+           type:"A"
+       }
+   })
+```
+## v-else
+- 为 v-if 或者 v-else-if 添加“else 块”。
+- ***注意***：前一兄弟元素必须有 v-if 或 v-else-if
+
+```js
+    <!-- 渲染阴天 -->
+    <div class="demo">
+        <div v-if= "type ==='B'">下雨了</div>
+        <div v-else-if ="type === 'C'" >晴天</div>
+        <div v-else>阴天</div>
+    </div>
+    <script>
+   let vm = new Vue({
+       el:".demo",
+       data:{
+           type:"A"
+       }
+   })
+    </script>
+```
+## v-show
+- 根据表达式之真假值，切换元素的 display CSS 属性。
+  ```html
+  <h1 v-show="ok">Hello!</h1>
+  ```
+
+## v-if VS v-show
+1. v-if 是惰性的，如果在初始渲染时条件为假，则什么也不做，直到条件第一次变为真时，才会开始渲染条件块。v-show则不管初始条件是什么，元素总是会被渲染（dispaly:none），并且只是简单地基于 CSS 进行切换。
+2. v-if 有更高的切换开销，v-show 有更高的初始渲染开销，如果需要非常频繁地切换，则使用 v-show 较好，如果在运行时条件很少改变，则使用 v-if 较好
+3. v-show不支持```<template>```元素
+4. v-show不支持v-else/v-else-if
 
