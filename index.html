@@ -9,19 +9,25 @@
 </head>
 
 <body>
-    <!-- 渲染阴天 -->
     <div class="demo">
-        <div v-if= "type ==='B'">下雨了</div>
-        <div v-else-if ="type === 'C'" >晴天</div>
-        <div v-else>阴天</div>
+        <button v-on:[event]="addMsg">点击</button>
+        <p>点击{{ msg }}次</p>
     </div>
     <script>
-   let vm = new Vue({
-       el:".demo",
-       data:{
-           type:"A"
-       }
-   })
+        let vm = new Vue({
+            el: ".demo",
+            data: {
+                msg: 0,
+                event:"click"
+            },
+            methods:{
+                addMsg:function(e){
+                    this.msg +=1
+                    console.log(e.target)
+                    
+                }
+            }
+        })
     </script>
 </body>
 
