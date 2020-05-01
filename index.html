@@ -10,21 +10,18 @@
 
 <body>
     <div class="demo">
-        <button v-on:[event]="addMsg">点击</button>
-        <p>点击{{ msg }}次</p>
+        <div @click="alert('div')">
+            <button @click.stop="alert('button')">点击</button>
+        </div>
     </div>
+
     <script>
         let vm = new Vue({
             el: ".demo",
-            data: {
-                msg: 0,
-                event:"click"
-            },
-            methods:{
-                addMsg:function(e){
-                    this.msg +=1
-                    console.log(e.target)
-                    
+            data: {},
+            methods: {
+                alert(str) {
+                    alert(str)
                 }
             }
         })
