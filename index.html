@@ -10,39 +10,58 @@
 
 <body>
     <div id="app">
-<!-- <input type="text" v-model ="msg"> -->
-
-
-<!-- <input type="checkbox" id="ma"  value = "麻辣烫" v-model="msgList">
-<label for="ma">麻辣烫</label>
-<input type="checkbox" id="huo" value= "火锅" v-model="msgList">
-<label for="huo">火锅</label>
-<input type="checkbox" id = "kao" value = "烤肉" v-model="msgList">
-<label for="kao">烤肉</label> -->
-
-<!-- <input type="radio" id="ma"  value = "麻辣烫" v-model="msg">
-<label for="ma">麻辣烫</label>
-<input type="radio" id="huo" value= "火锅" v-model="msg">
-<label for="huo">火锅</label>
-<input type="radio" id = "kao" value = "烤肉" v-model="msg">
-<label for="kao">烤肉</label> -->
-
-<!-- <select v-model= "msg">
-<option value="请选择" disabled>请选择</option>
-<option value="跳舞">跳舞</option>
-<option value="唱歌">唱歌</option>
-<option value="健身">健身</option>
-</select> -->
+        <input type="text" v-model.number = "num1">
+        <select v-model="type" >
+            <option value="+">+</option>
+            <option value="-">-</option>
+            <option value="*">*</option>
+            <option value="/">/</option>
+        </select>
+        <input type="text" v-model.number = "num2">
+        <button 
+        @click= "handleClick"
+        >=</button>
+        <span>
+            {{ result }}
+        </span>
     </div>
 
     <script>
    let vm = new Vue({
        el:"#app",
        data:{
-           msg:"请选择",
-           msgList:[]
-       }
+         num1:0,
+         num2:0,
+         type:"+",
+         result:0
+       },
+       methods:{
+        handleClick(){
+            // const {type,num1,num2} = this
+        
+            switch(this.type){
+            case "+":
+             this.result = this.num1 + this.num2
+             break;
+            case "-":
+             this.result = this.num1 - this.num2
+             break;
+            case "*":
+             this.result = this.num1 * this.num2
+             break;
+            case "/":
+             this.result = this.num1 / this.num2
+             break;}
+        }
+        }
+       
    })
+
+// if(this.type === "+"){
+//                 this.result = this.num1 + this.num2
+
+// }
+
     </script>
 </body>
 
