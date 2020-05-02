@@ -6,103 +6,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="./vue.js"></script>
-    <link rel="stylesheet" href="./index.css">
 </head>
 
 <body>
     <div id="app">
-        <div class="header">
-            <div class="container">
-                <div class="logo">toDoList</div>
-                <div class="input-area">
-                    <input type="text" @input="handleInput" :value="curMask">
-                    <button @click="addMask">添加</button>
-                </div>
-            </div>
-        </div>
+<!-- <input type="text" v-model ="msg"> -->
 
-        <div class="container">
-            <h2>
-                <span>正在进行</span>
-                <span class="mask-num">
-                    {{ needList.length }}
-                </span>
-            </h2>
-            <ul class="mask-list">
-                <li v-for="(mask,index) in needList" :key="mask.id">
-                    <div>
-                        <input type="checkbox" @change="doCheck(index,'need')">
-                        <span>
-                            {{ mask.title }}
-                        </span>
-                    </div>
-                    <button
-                    @click="deleteMask(index,'need')"
-                    >删除</button>
 
-                </li>
-            </ul>
-        </div>
-        <div class="container">
-            <h2>
-                <span>已经完成</span>
-                <span class="mask-num">
-                    {{ completeList.length }}
-                </span>
-            </h2>
-            <ul class="mask-list complete-list">
-                <li v-for="(mask,index) in completeList" :key="mask.id">
-                    <div>
-                        <input type="checkbox" @change="doCheck(index,'complete')">
-                        <span>
-                            {{ mask.title }}
-                        </span>
-                    </div>
-                    <button
-                    @click = "deleteMask(index,'complete')"
-                    >删除</button>
-                </li>
-            </ul>
-        </div>
+<!-- <input type="checkbox" id="ma"  value = "麻辣烫" v-model="msgList">
+<label for="ma">麻辣烫</label>
+<input type="checkbox" id="huo" value= "火锅" v-model="msgList">
+<label for="huo">火锅</label>
+<input type="checkbox" id = "kao" value = "烤肉" v-model="msgList">
+<label for="kao">烤肉</label> -->
 
+<!-- <input type="radio" id="ma"  value = "麻辣烫" v-model="msg">
+<label for="ma">麻辣烫</label>
+<input type="radio" id="huo" value= "火锅" v-model="msg">
+<label for="huo">火锅</label>
+<input type="radio" id = "kao" value = "烤肉" v-model="msg">
+<label for="kao">烤肉</label> -->
+
+<!-- <select v-model= "msg">
+<option value="请选择" disabled>请选择</option>
+<option value="跳舞">跳舞</option>
+<option value="唱歌">唱歌</option>
+<option value="健身">健身</option>
+</select> -->
     </div>
 
     <script>
-        let vm = new Vue({
-            el: "#app",
-            data: {
-                curMask: '',
-                needList: [],
-                completeList: []
-            },
-            methods: {
-                handleInput(e) {
-                    this.curMask = e.target.value
-                },
-                addMask() {
-                    this.needList.push({
-                        title: this.curMask,
-                        id: Math.random()
-                    })
-                    this.curMask = ''
-                },
-                doCheck(index, type) {
-                if (type === 'need') {
-                let changeList = this.needList.splice(index, 1)
-                this.completeList.push(...changeList)
-                } else {
-                let changeList = this.completeList.splice(index, 1)
-                this.needList.push(...changeList)
-                }
-
-                },
-                deleteMask(index,type){
-                    let list = type === 'need' ? this.needList:this.completeList
-                    list.splice(index,1)
-
-                }
-            }
-        })
+   let vm = new Vue({
+       el:"#app",
+       data:{
+           msg:"请选择",
+           msgList:[]
+       }
+   })
     </script>
 </body>
 
