@@ -1,23 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
   <script src="./vue.js"></script>
+  <link rel="stylesheet" href="./index.css">
 </head>
-<body>
-  <div id="app">
-    
-   <script>
 
-       new Vue({
-     el: '#app',
- 
-   })
-   </script>
- 
+<body>
+
+  <div id="app">
+ {{ obj.today }}
+
+  </div>
+  <script>
+  let vm =  new Vue({
+      el: '#app',
+      data:{
+        obj:{
+          today:"35度",
+          tomorrow:"25度"
+        }
+      },
+      watch:{
+     'obj.today'(){
+       console.log(1)
+     }
+      },
+    })
+   //vm.obj.today = "13" 打印1
+  </script>
+
 
 </body>
+
 </html>
