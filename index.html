@@ -6,32 +6,77 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
-  <script src="./vue.js"></script>
   <link rel="stylesheet" href="./index.css">
+  <script src="./vue.js"></script>
+<script src="./jquery.js"></script>
 </head>
 
 <body>
 
   <div id="app">
- {{ obj.today }}
+    
+<div class="logo">
+  <img src="https://www.baidu.com/img/dong_f6764cd1911fae7d460b25e31c7e342c.gif" title="点击一下">
+</div>
+
+<div class="search-box">
+  <span class="search-area">
+<input 
+  type="text"
+  maxlength ="100"
+  v-model ="inputVal"
+  @focus ="() => inputFlag = true"
+  @blue = "() => inputFlag = false"
+  >
+  <!-- <span class="icon icon-paizhao"></span> -->
+  </span>
+<span class="search-btn">百度一下</span>
+</div>
+
+
+<!-- 聚焦并且输入了搜索内容 才展示 -->
+<ul class="search-list"
+v-show ="inputFlag && searchList.length"
+>
+ <li
+ v-for=" res in searchList"
+ :key="res"
+ >
+{{ res }}
+</li>
+</ul>
 
   </div>
   <script>
-  let vm =  new Vue({
-      el: '#app',
-      data:{
-        obj:{
-          today:"35度",
-          tomorrow:"25度"
-        }
-      },
-      watch:{
-     'obj.today'(){
-       console.log(1)
+   let vm = new Vue({
+     el:"#app",
+     data:{
+       inputVal:'',
+       searchList:[],
+       inputFlag:false
+     },
+     methods:{
+       doInput(res){
+        //  res.s 是我们请求后得到的数组，是搜索联想
+         this.searchList = res.s
+       }
+     },
+     watch:{
+       inputVal(){
+         $.ajax({
+           dataType:'jsonp',
+           url:'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su',
+           data:{
+             //wd:要搜索的字
+             wd:this.inputVal,
+             //这里要写vm.函数名字(回调函数)
+             cb:'vm.doInput'
+             
+           }
+         })
+       }
      }
-      },
-    })
-   //vm.obj.today = "13" 打印1
+   })
   </script>
 
 
