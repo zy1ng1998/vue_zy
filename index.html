@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="./test.css">
+    <link rel="stylesheet" href="./index.css">
+    <script src="./axios.js"></script>
     <script src="./vue.js"></script>
-    <script src="./vue-resource.js"></script>
+   
 </head>
 <body>
     <div id="app">
@@ -19,7 +20,7 @@
         <div>
             <div class="upload-btn" @click ="handleUpload">上传</div>
             <div class="show-btn" @click = "handleShow">显示人物信息</div>
-            <div class="test-btn" @click ="handleJsonp">测试jsonp</div>
+         
             <ul class="person-list">
                 <li class="person" v-for="person in personList">
                     <span>
@@ -30,9 +31,9 @@
                     </span>
                 </li>
             </ul>
-        </div>
     </div>
-
+    </div>
+</body>
     <script>
         let vm = new Vue({
             el:"#app",
@@ -44,30 +45,23 @@
             },
             methods:{
                 handleUpload(){
-                   this.$http.post('https://developer.duyiedu.com/vue/setUserInfo',{
-                       name:this.name,
-                       mail:this.mail
-                   }).then(res =>{
-                       this.msg = res.body.msg
-                   }).catch(error =>{
-                       this.msg = error.body.msg
-                   })
+                    const{ name ,mail } = this
+                    axios.post('https://developer.duyiedu.com/vue/setUserInfo',{name,mail}
+                    ).then(res=>{
+                       this.msg = res.data.msg
+                    })
+                
                 },
                 handleShow(){
-                    this.$http.get('https://developer.duyiedu.com/vue/getUserInfo').then(res =>{
-                        this.personList = res.body.data
-                    })
+                axios({
+                    methods:'get',
+                    url:'https://developer.duyiedu.com/vue/getUserInfo'
+                }).then(res =>{
+                    this.msg = res.data.msg
+                    this.personList = res.data.data
+                })
                 },
-                handleJsonp(){
-                    this.$http.jsonp('https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su',{
-                        params:{
-                            wd:"不想上班"
-                        },
-                        jsonp:'cb'
-                    }).then(res =>{
-                        console.log(res)
-                    })
-                }
+              
             },
             watch:{
                 msg(){
@@ -78,6 +72,7 @@
                     this.msg = ''
                 }
             }
+          
         })
     </script>
 </body>
