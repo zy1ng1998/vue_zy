@@ -224,89 +224,92 @@
         },
       
         created() {
-            axios.get('nav').then(res => {
-                if (res.status === 200) {
-                    this.navList = res.data.data
-                }
 
-                axios.get('banner').then(res => {
-                    if (res.status === 200) {
-                        lastLi = {
-                            ...res.data.data[0]
-                        }
-                        lastLi.id = 1905201
-                        this.bannerList = [...res.data.data, lastLi]
+            axios.all([
+                axios.get('nav'),
+                axios.get('banner'),
+                axios.get('video',{
+                    params:{
+                        start:0,
+                        offset:12
                     }
                 })
-            })
+            ]).then(axios.spread((navRes,bannerRes,videoRes)=>{
+             this.initNavList(navRes);
+             this.initBannerList(bannerRes);
+             this.initVideoList(videoRes);
 
-            axios.get('video', {
-                params: {
-                    start: 0,
-                    offset: 12
-                }
-            }).then(res => {
-                if (res.status === 200) {
-                    this.oldVideoList = res.data.data;
-                    this.videoCount = res.data.count;
-                }
-
-            })
+            }))
+            
         },
         mounted() {
             this.autoMove()
 
         },
         methods: {
-            handleClick() {
-                this.navHide = !this.navHide
-            },
-            handleIndexClick(index) {
-                this.navActiveIndex = index
-            },
-            autoMove() {
+        initNavList(navRes){
+        this.navList = navRes;
+        },
 
-                setTimeout(() => {
-                    if (this.bannerListIndex === 0) {
-                        this.bannerStyle.transition = "left .3s"
-                    }
+        initBannerList(bannerRes){
+        const lastLi = {
+        ...bannerRes[0]
+        }
+        lastLi.id=1905201
+        this.bannerList = [...bannerRes,lastLi];
+        },
+        initVideoList(videoRes){
 
-                    this.bannerListIndex++
-                    this.bannerStyle.left = -this.bannerListIndex * this.bannerWidth + "px"
-                }, 1500)
-            },
+        this.oldVideoList = videoRes.data;
+        this.videoCount = videoRes.count;
 
-            handleTransition() {
-                if (this.bannerListIndex === 3) {
-                    this.bannerListIndex = 0;
-                    this.bannerStyle.left = 0;
-                    this.bannerStyle.transition = "none"
-                }
-                this.autoMove()
-            },
-            handleScroll(e){
+        },
+        handleClick() {
+        this.navHide = !this.navHide
+        },
+        handleIndexClick(index) {
+        this.navActiveIndex = index
+        },
+        autoMove() {
 
-                const { scrollHeight, offsetHeight, scrollTop } = e.target;
-                const toBottomHeight = scrollHeight - offsetHeight - scrollTop;
-                const videoLength = this.videoList.length;
+        setTimeout(() => {
+        if (this.bannerListIndex === 0) {
+        this.bannerStyle.transition = "left .3s"
+        }
 
-                if(videoLength === this.videoCount) { return; }
+        this.bannerListIndex++
+        this.bannerStyle.left = -this.bannerListIndex * this.bannerWidth + "px"
+        }, 1500)
+        },
 
-                if(toBottomHeight < 200 && !this.videoGettingData) { 
-                    this.videoGettingData=true;
-                    axios.get('video', {
-                    params: { 
-                        start: this.videoList.length,
-                        offset: 12 } }).then(res=> {
-                        if(res.status === 200) {
-                        this.oldVideoList.push(...res.data.data);
-                        this.videoGettingData = false;
-                        }
-                    })
+
+        handleTransition() {
+        if (this.bannerListIndex === 3) {
+        this.bannerListIndex = 0;
+        this.bannerStyle.left = 0;
+        this.bannerStyle.transition = "none"
+        }
+        this.autoMove()
+        },
+        handleScroll(e){
+
+        const { scrollHeight, offsetHeight, scrollTop } = e.target;
+        const toBottomHeight = scrollHeight - offsetHeight - scrollTop;
+        const videoLength = this.videoList.length;
+
+        if(videoLength === this.videoCount) { return; }
+
+        if(toBottomHeight < 200 && !this.videoGettingData) { this.videoGettingData=true; axios.get('video', { params: {
+            start: this.videoList.length, offset: 12 } }).then(res=> {
+
+            this.oldVideoList.push(...res.data);
+            this.videoGettingData = false;
+
+            })
             }
 
-        }
-        }
+            },
+            }
 
     })
 </script>
