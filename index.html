@@ -4,66 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
     <script src="./vue.js"></script>
+    <script src="./axios.js"></script>
 </head>
 <body>
-    <div id="app">
-<counter></counter>
-<counter></counter>
-<counter></counter>
-
+<div id="app">
+<my-count
+type ="radio"
+></my-count>
 
 </div>
 
-    <div id="app1">
-       
-
-    </div>
 
 
 <script>
-
-    Vue.component('counter',{
-        data(){
-            return {
-                count:0
-            }
-        },
-        template:`
-        <button @click = "count ++">点击 {{ count }}次</button>
-        
-        `
-    })
-Vue.component('dog-house',{
+Vue.component('my-count',{
+    inheritAttrs: false,
     template:`
-   <div> 组件</div>
+    <label>
+    <input v-bind="$attrs" />
+</label>
+
     `
 })
-    let vm = new Vue({
-        el:'#app',
 
-        data:{
-            
-        },
-
-    })
-
-    let vm1= new Vue({
-        el:'#app1',
-
-        data:{
-            
-        },
-        components:{
-            'cat':{
-                template:`
-                <div>喵喵</div>
-                `
-                },
-     
-                
-        }
-    })
+let vm = new Vue({
+    el:'#app',
+    data:{
+        count:0,
+    },
+})
+  
 </script>
 
 </body>
