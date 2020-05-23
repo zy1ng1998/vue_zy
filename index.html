@@ -10,33 +10,58 @@
 </head>
 <body>
 <div id="app">
-<my-count
-type ="radio"
-></my-count>
+<!-- <my-input v-model="name"
+></my-input> -->
+
+ <my-checkbox
+ :checked="checked"
+@change ="checked = $event"
+ ></my-checkbox>
+
+
 
 </div>
 
-
-
 <script>
-Vue.component('my-count',{
-    inheritAttrs: false,
-    template:`
-    <label>
-    <input v-bind="$attrs" />
-</label>
+//   Vue.component('my-input',{
+//       props:{
+//           value:String
+//       },
+//     template:`
+//     <label>
+// 姓名：<input :value ="value" @input = '$emit("input",$event.target.event)'/>
+//     </label>
+//     `
+// })
+ 
+//  let vm = new Vue({
+//     el:'#app',
+//     data:{
+//      name:'zy'
+//     },
+// })
 
+Vue.component('my-checkbox',{
+    props:{
+        checked:Boolean
+    },
+    model:{
+prop:'checked',
+event:'change'
+    },
+    template:`
+    <input type ="checkbox" :checked="checked" @change ="$emit('change',$event.target.checked)"/>
     `
 })
-
-let vm = new Vue({
+ let vm = new Vue({
     el:'#app',
     data:{
-        count:0,
+ checked:true,
     },
 })
-  
-</script>
+
+
+ </script>
 
 </body>
 
