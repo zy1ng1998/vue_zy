@@ -10,55 +10,72 @@
 </head>
 <body>
 <div id="app">
-<!-- <my-input v-model="name"
-></my-input> -->
+ 
 
- <my-checkbox
- :checked="checked"
-@change ="checked = $event"
- ></my-checkbox>
+     <my-cmp v-slot ="{ user }">
 
+  {{ user.name }}
+      
+     </my-cmp>
 
-
+  
 </div>
 
-<script>
-//   Vue.component('my-input',{
-//       props:{
-//           value:String
-//       },
-//     template:`
-//     <label>
-// 姓名：<input :value ="value" @input = '$emit("input",$event.target.event)'/>
-//     </label>
-//     `
-// })
- 
-//  let vm = new Vue({
-//     el:'#app',
-//     data:{
-//      name:'zy'
-//     },
-// })
 
-Vue.component('my-checkbox',{
-    props:{
-        checked:Boolean
-    },
-    model:{
-prop:'checked',
-event:'change'
-    },
-    template:`
-    <input type ="checkbox" :checked="checked" @change ="$emit('change',$event.target.checked)"/>
-    `
-})
- let vm = new Vue({
+<script>
+
+    Vue.component('my-cmp',{
+        data(){
+            return{
+                user:{
+                    name:'zy',
+                    age:10
+                }
+            }
+        },
+        template:`
+        <div>
+            <slot :user="user"></slot>
+        </div>
+        `
+    })
+    
+    let vm = new Vue({
     el:'#app',
     data:{
- checked:true,
+   
     },
-})
+    })
+// Vue.component('my-cmp',{
+//     data(){
+//         return {
+//             name:"zy"
+//         }
+//     },
+// template:`
+// <div>
+// <slot>xx</slot>
+// </div>
+// `
+// })
+
+
+// Vue.component('my-cmp', {
+//   template: `
+//     <div class="container">
+//       <header>
+//         <slot name="header"></slot>
+//       </header>
+//       <main>
+//         <slot></slot>
+//       </main>
+//       <footer>
+//         <slot name="footer"></slot>
+//       </footer>
+//     </div>
+//   `
+// })
+
 
 
  </script>
