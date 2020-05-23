@@ -10,11 +10,36 @@
 </head>
 <body>
 <div id="app">
+<cmp-1></cmp-1>
+<cmp-2></cmp-2>
+
 
 </div>
 
 <script>
+var mixin={
+      data(){
+        return{
+            name:"zy"
+        }
+    },
+}
 
+Vue.component('cmp-1',{
+    mixins : [mixin],
+    template:`
+    <div>cmp-1</div>
+    `,
+    mounted(){
+        console.log(this.name)
+    }
+})
+
+Vue.component('cmp-2',{
+    template:`
+    <div>cmp-2</div>
+    `
+})
     let vm = new Vue({
     el:'#app',
     data:{
