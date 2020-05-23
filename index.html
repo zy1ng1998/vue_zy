@@ -10,71 +10,60 @@
 </head>
 <body>
 <div id="app">
- 
+ <!-- <component is="cmp-b"></component> -->
+<button v-for="page in pages" :key="page.id" @click ="cmp = page.cmp">
+{{ page.name }}
+</button>
+<keep-alive>
+       <component :is ="cmp"></component>
+</keep-alive>
 
-     <my-cmp v-slot ="{ user }">
-
-  {{ user.name }}
-      
-     </my-cmp>
 
   
 </div>
 
-
 <script>
-
-    Vue.component('my-cmp',{
-        data(){
-            return{
-                user:{
-                    name:'zy',
-                    age:10
-                }
-            }
+Vue.component('cmp-blog',{
+    data(){
+        return{
+        postCmp:"",
+        posts:[
+        {content:{template:`<div>内容1</div>`}, title:"标题1", postCmp:"cmp-blog", id:00},
+        {content:{template:`<div>内容2</div>`}, title:"标题2", postCmp:"cmp-blog", id:11},
+        ],
+        }
         },
         template:`
         <div>
-            <slot :user="user"></slot>
+        <button
+       v-for ="post in posts"
+       @click ="postCmp = post.content"
+       :key= "post.id"
+       >
+       {{ post.title }}
+       </button>
+       <keep-alive>
+           <component :is="postCmp"></component>
+       </keep-alive>
         </div>
         `
-    })
-    
+        })
+Vue.component('cmp-more',{
+    template:`
+    <div>more</div>
+    `
+})  
     let vm = new Vue({
     el:'#app',
     data:{
-   
+   pages:[
+       {name:"博客", cmp:"cmp-blog", id:0},
+       {name:"更多", cmp:"cmp-more", id:1},
+   ],
+ 
+   cmp:"cmp-blog"
     },
     })
-// Vue.component('my-cmp',{
-//     data(){
-//         return {
-//             name:"zy"
-//         }
-//     },
-// template:`
-// <div>
-// <slot>xx</slot>
-// </div>
-// `
-// })
-
-
-// Vue.component('my-cmp', {
-//   template: `
-//     <div class="container">
-//       <header>
-//         <slot name="header"></slot>
-//       </header>
-//       <main>
-//         <slot></slot>
-//       </main>
-//       <footer>
-//         <slot name="footer"></slot>
-//       </footer>
-//     </div>
-//   `
-// })
 
 
 
