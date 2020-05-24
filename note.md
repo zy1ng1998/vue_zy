@@ -4140,3 +4140,218 @@ new Vue({
 ```
 
 谨慎使用全局混入，因为它会影响每个单独创建的 Vue 实例 (包括第三方组件)。大多数情况下，只应当应用于自定义选项。
+
+# 自定义指令
+
+## 简介
+
+我们可以自己写一个自定义指令去操作DOM元素，以达到代码复用的目的。注意，在 Vue 中，代码复用和抽象的主要形式是组件。然而，有的情况下，你仍然需要对普通 DOM 元素进行底层操作，这时候就会用到自定义指令。
+
+全局注册指令：
+```js
+Vue.directive('focus', {/** */})
+```
+
+局部注册指令
+```js
+const vm = new Vue({
+  el: '#app',
+  directives: {
+    focus: {/** */}
+  }
+})
+```
+
+使用：
+```js 
+<input v-focus></input>
+```
+
+例如，写一个自动聚焦的输入框：
+```js
+Vue.directive('focus', {
+  // 当被绑定的元素插入到DOM时执行
+  inserted: function (el) {
+    el.focus();
+  }
+})
+```
+此时，在input元素上使用 v-focus 指令就可以实现自动聚焦了。
+
+
+### 模拟 v-show
+```html
+<input type="text"  v-myshow ="show">
+
+```
+
+
+```js
+// v-show 模拟思路
+// 绑定的值为false(true) 被绑定元素的dispaly为none ('')  ,括号内对应相反情况
+
+Vue.directive('myshow',{
+    bind(el,binding){
+        let display = binding.value ? '' : 'none';
+        el.style.display = display
+        console.log(el.style.display)
+    },
+    update(el,binding){
+        let display = binding.value ? '' : 'none';
+        el.style.display = display
+    },
+})
+
+ let vm = new Vue({
+    el:'#app',
+    data:{
+   show:false,
+    },
+    })
+```
+
+#### 函数简写
+- 当写在 bind 和 update 中触发相同行为，而不关心其他钩子时，可以写成函数的形式
+```js
+// 简写
+// 当写在 bind 和 update 中触发相同行为，而不关心其他钩子时，可以写成函数的形式
+Vue.directive('myshow',(el,binding)=>{
+    let display = binding.value ? '' : 'none';
+    el.style.display = display
+})
+```
+### 模拟 v-model
+```html
+<input type="text"  v-mymodel ="msg">
+
+```
+
+```js
+// v-model 模拟思路
+// 1.通过绑定的数据，给元素设置value  bind
+// 2.input元素的值改变 绑定数据改变   bind
+// 3.绑定数据改变 input元素的值改变  updata
+
+// binding.value => msg 的值 zy  即绑定数据的值zy
+// vnode.context.binding.expression  => 即data中的msg key  
+// el.value 绑定元素 input的value值
+
+
+Vue.directive('mymodel',{
+    bind(el, binding, vnode ){
+        let vm = vnode.context
+        el.value = binding.value;
+        el.oninput = function(e){
+            vm[binding.expression] = el.value;
+        }
+    },
+    update(el,binding){
+        el.value = binding.value;
+    }
+})
+
+   let vm = new Vue({
+    el:'#app',
+    data:{
+   msg:"zy"
+    },
+    })
+```
+
+### 写一个 v-slice（截取文本框）
+
+```html
+<input type="text" v-slice:7 ="msg">
+```
+
+```js
+// 自定义模仿v-slice 
+// v-slice ="msg"  这个和v-model  功能一样
+// v-slice：5  输入框内只保留五个字符    参数5 即 binding.arg
+
+// v-model 模拟思路
+// 1.通过绑定的数据，给元素设置value  bind
+// 2.input元素的值改变 绑定数据改变   bind
+// 3.绑定数据改变 input元素的值改变  updata
+
+// binding.value => msg 的值 zy  即绑定数据的值
+// vnode.context.binding.expression  => 即 msg 这个属性名msg   改变数据通过属性名改
+// el.value 绑定元素 input的value值
+
+Vue.directive('slice',{
+    bind(el, binding, vnode,  ){
+        let vm = vnode.context
+        binding.arg = binding.arg || 5;
+        el.value = binding.value.slice(0,binding.arg);
+        vm[binding.expression] = binding.value.slice(0,binding.arg)
+
+        el.oninput = function(e){
+            vm[binding.expression] = el.value.slice(0,binding.arg);
+            el.value = el.value.slice(0,binding.arg);
+        }
+    },
+    update(el,binding, vnode, ){
+        let vm = vnode.context
+        binding.arg = binding.arg || 5;
+        el.value = binding.value.slice(0, binding.arg);
+        vm[binding.expression] = binding.value.slice(0, binding.arg);
+    }
+})
+
+   let vm = new Vue({
+    el:'#app',
+    data:{
+   msg:'与四川不是我v帮我',
+    },
+    })
+
+```
+
+
+```js
+// 简写 
+// 当写在 bind 和 update 中触发相同行为，而不关心其他钩子时，可以写成函数的形式
+Vue.directive('slice',(el,binding,vnode)=>{
+    let vm = vnode.context
+        binding.arg = binding.arg || 5;
+        el.value = binding.value.slice(0,binding.arg);
+        vm[binding.expression] = binding.value.slice(0,binding.arg)
+
+        el.oninput = function(e){
+            vm[binding.expression] = el.value.slice(0,binding.arg);
+            el.value = el.value.slice(0,binding.arg);
+        }
+})
+```
+
+```js
+// 进一步简写
+Vue.directive('slice',(el,binding,vnode)=>{
+    let vm = vnode.context
+    let{value, arg, expression } = binding;
+    arg = arg || 5;
+    el.value = value.slice(0,arg);
+    vm[expression] = value.slice(0,arg)
+      el.oninput = function(e){
+            vm[expression] = el.value.slice(0,arg);
+            el.value = el.value.slice(0,arg);
+        }
+})
+
+```
+
+### 动态指令参数
+指令的参数可以是动态的。如：``v-directive:[arguments]="value``，``argument``参数可以根据组件实例数据进行更新。
+
+## 对象字面量
+如果自定义指令需要多个值，可以传入一个 JS 对象字面量。指令函数能够接受所有合法的 JS 表达式。
+
+```html
+<div v-demo="{ color: 'white', text: 'hello!' }"></div>
+```
+```js
+Vue.directive('demo', function (el, binding) {
+  console.log(binding.value.color) // => "white"
+  console.log(binding.value.text)  // => "hello!"
+})
+```

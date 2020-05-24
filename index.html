@@ -10,40 +10,136 @@
 </head>
 <body>
 <div id="app">
-<cmp-1></cmp-1>
-<cmp-2></cmp-2>
+<!-- <input type="text" v-focus> -->
 
+<!-- <input type="text"  v-myshow ="show"> -->
+
+<input type="text" v-slice:7 ="msg">
+{{ msg }}
 
 </div>
 
 <script>
-var mixin={
-      data(){
-        return{
-            name:"zy"
+
+    // v-focus 输入框被插入页面时自动聚焦
+// Vue.directive('focus',{
+//     inserted(el){
+//         el.focus();
+//     }
+// })
+
+
+
+// v-model 模拟思路
+// 1.通过绑定的数据，给元素设置value  bind
+// 2.input元素的值改变 绑定数据改变   bind
+// 3.绑定数据改变 input元素的值改变  updata
+
+// binding.value => msg 的值 zy  即绑定数据的值
+// vnode.context.binding.expression  => 即 msg 这个属性名msg   改变数据通过属性名改
+// el.value 绑定元素 input的value值
+
+
+// Vue.directive('mymodel',{
+//     bind(el, binding, vnode ){
+//         let vm = vnode.context
+//         el.value = binding.value;
+//         el.oninput = function(e){
+//             vm[binding.expression] = el.value;
+//         }
+//     },
+//     update(el,binding){
+//         el.value = binding.value;
+//     }
+// })
+
+
+// v-show 模拟思路
+// 绑定的值为false(true) 被绑定元素的dispaly为none ('')  ,括号内对应相反情况
+
+// Vue.directive('myshow',{
+//     bind(el,binding){
+//         let display = binding.value ? '' : 'none';
+//         el.style.display = display
+//         console.log(el.style.display)
+//     },
+//     update(el,binding){
+//         let display = binding.value ? '' : 'none';
+//         el.style.display = display
+//     },
+// })
+
+// 简写
+// 当想在 bind 和 update 中触发相同行为，而不关心其他钩子时，可以写成函数的形式
+// Vue.directive('myshow',(el,binding)=>{
+//     let display = binding.value ? '' : 'none';
+//     el.style.display = display
+// })
+
+// 自定义模仿v-slice 
+// v-slice ="msg"  这个和v-model  功能一样
+// v-slice：5  输入框内只保留五个字符    参数5 即 binding.arg
+
+// v-model 模拟思路
+// 1.通过绑定的数据，给元素设置value  bind
+// 2.input元素的值改变 绑定数据改变   bind
+// 3.绑定数据改变 input元素的值改变  updata
+
+// binding.value => msg 的值 zy  即绑定数据的值
+// vnode.context.binding.expression  => 即 msg 这个属性名msg   改变数据通过属性名改
+// el.value 绑定元素 input的value值
+
+Vue.directive('slice',{
+    bind(el, binding, vnode,  ){
+        let vm = vnode.context
+        binding.arg = binding.arg || 5;
+        el.value = binding.value.slice(0,binding.arg);
+        vm[binding.expression] = binding.value.slice(0,binding.arg)
+
+        el.oninput = function(e){
+            vm[binding.expression] = el.value.slice(0,binding.arg);
+            el.value = el.value.slice(0,binding.arg);
         }
     },
-}
-
-Vue.component('cmp-1',{
-    mixins : [mixin],
-    template:`
-    <div>cmp-1</div>
-    `,
-    mounted(){
-        console.log(this.name)
+    update(el,binding, vnode, ){
+        let vm = vnode.context
+        binding.arg = binding.arg || 5;
+        el.value = binding.value.slice(0, binding.arg);
+        vm[binding.expression] = binding.value.slice(0, binding.arg);
     }
 })
 
-Vue.component('cmp-2',{
-    template:`
-    <div>cmp-2</div>
-    `
+// 简写 
+Vue.directive('slice',(el,binding,vnode)=>{
+    let vm = vnode.context
+        binding.arg = binding.arg || 5;
+        el.value = binding.value.slice(0,binding.arg);
+        vm[binding.expression] = binding.value.slice(0,binding.arg)
+
+        el.oninput = function(e){
+            vm[binding.expression] = el.value.slice(0,binding.arg);
+            el.value = el.value.slice(0,binding.arg);
+        }
 })
-    let vm = new Vue({
+
+// 进一步简写
+Vue.directive('slice',(el,binding,vnode)=>{
+    let vm = vnode.context
+    let{value, arg, expression } = binding;
+    arg = arg || 5;
+    el.value = value.slice(0,arg);
+    vm[expression] = value.slice(0,arg)
+      el.oninput = function(e){
+            vm[expression] = el.value.slice(0,arg);
+            el.value = el.value.slice(0,arg);
+        }
+})
+
+
+   let vm = new Vue({
     el:'#app',
     data:{
-   
+   msg:'与四川不是我v帮我',
     },
     })
 
