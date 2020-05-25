@@ -1,27 +1,25 @@
 <template>
-    <div>
-        姓名{{ name }}
-        <p>父元素P</p>
-        <base-son />
-    </div>
+    <div class="app">
+        <DatePicker :date="date" />
+        </div>
+        
 </template>
 
 <script>
-import baseSon from "./Son"
+import DatePicker from "./DatePicker";
+
 export default {
     components:{
-        baseSon
+        DatePicker,
     },
     data(){
         return{
-            name:'zy'
+            date:new Date(),
         }
-    }
+    },
 }
 </script>
 
 <style>
-div{
-    background-color: blueviolet;
-}
+
 </style>
