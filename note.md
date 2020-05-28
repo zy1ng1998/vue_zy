@@ -1,5 +1,5 @@
-[toc]
 
+[toc]
 # vue的响应式1
 - 什么是响应式
 >数据变化页面就会重新渲染
@@ -320,6 +320,7 @@ vm.$delete是Vue.delete的别名
      
     // 控制台    {{ msg }}
 ```
+
 ## v-clock
 - 这个指令保持在元素上直到关联实例结束编译
 - 可以解决闪烁的问题
@@ -331,7 +332,262 @@ vm.$delete是Vue.delete的别名
         }
 </style>
 
-```
+<!-- TOC -->
+
+- [vue的响应式1](#vue的响应式1)
+  - [vm.$el](#vmel)
+  - [vm.$nextTick或Vue.nextTick](#vmnexttick或vuenexttick)
+- [vue的响应式2](#vue的响应式2)
+- [vue相关指令](#vue相关指令)
+  - [v-pre](#v-pre)
+  - [v-clock](#v-clock)
+  - [v-once](#v-once)
+  - [v-text](#v-text)
+  - [v-html](#v-html)
+- [条件渲染](#条件渲染)
+  - [v-if](#v-if)
+  - [v-else-if](#v-else-if)
+  - [v-else](#v-else)
+  - [v-show](#v-show)
+  - [v-if VS v-show](#v-if-vs-v-show)
+- [v-bind指令](#v-bind指令)
+- [v-on](#v-on)
+  - [methods](#methods)
+  - [为什么在 HTML 中监听事件?](#为什么在-html-中监听事件)
+- [v-on指令的修饰符](#v-on指令的修饰符)
+  - [事件修饰符](#事件修饰符)
+    - [.stop](#stop)
+    - [.prevent](#prevent)
+    - [.capture](#capture)
+    - [.self](#self)
+    - [.passive](#passive)
+    - [注意](#注意)
+  - [按键修饰符](#按键修饰符)
+    - [按键码](#按键码)
+  - [系统修饰键](#系统修饰键)
+    - [exact 修饰符](#exact-修饰符)
+  - [鼠标按钮修饰符](#鼠标按钮修饰符)
+- [列表渲染](#列表渲染)
+  - [在v-for中使用数组](#在v-for中使用数组)
+  - [在v-for中使用对象](#在v-for中使用对象)
+  - [在v-for中使用数字](#在v-for中使用数字)
+  - [在v-for中使用字符串](#在v-for中使用字符串)
+  - [循环一段包含多个元素的内容](#循环一段包含多个元素的内容)
+  - [关于key](#关于key)
+    - [key的使用方法](#key的使用方法)
+  - [v-for 和 v-if 一同使用](#v-for-和-v-if-一同使用)
+- [v-model指令](#v-model指令)
+  - [input](#input)
+    - [type=text 文本框](#typetext-文本框)
+    - [type=checkbox 复选框](#typecheckbox-复选框)
+      - [单个复选框](#单个复选框)
+      - [多个复选框](#多个复选框)
+    - [type=radio 单选框](#typeradio-单选框)
+  - [textarea](#textarea)
+  - [select](#select)
+    - [单选](#单选)
+    - [多选](#多选)
+  - [修饰符](#修饰符)
+    - [.lazy](#lazy)
+    - [.number](#number)
+    - [.trim](#trim)
+- [计算属性](#计算属性)
+  - [基础用法](#基础用法)
+  - [计算属性 vs 方法](#计算属性-vs-方法)
+  - [深入计算属性](#深入计算属性)
+    - [getter 读取](#getter-读取)
+    - [setter 设置](#setter-设置)
+- [侦听器](#侦听器)
+  - [值类型](#值类型)
+    - [函数类型](#函数类型)
+    - [字符串类型](#字符串类型)
+    - [对象类型](#对象类型)
+      - [handler](#handler)
+      - [deep](#deep)
+      - [immediate](#immediate)
+    - [数组类型](#数组类型)
+  - [键类型](#键类型)
+    - [正常对象key值](#正常对象key值)
+    - [字符串类型key值](#字符串类型key值)
+  - [vm.$watch](#vmwatch)
+  - [侦听器 vs 计算属性](#侦听器-vs-计算属性)
+- [vue-resource](#vue-resource)
+  - [引入vue-resource](#引入vue-resource)
+  - [请求方法](#请求方法)
+    - [POST请求](#post请求)
+    - [GET请求](#get请求)
+    - [PUT请求](#put请求)
+    - [PATCH请求](#patch请求)
+    - [DELETE请求](#delete请求)
+    - [HEAD请求](#head请求)
+    - [JSONP请求](#jsonp请求)
+  - [options 参数说明](#options-参数说明)
+  - [响应对象](#响应对象)
+    - [属性](#属性)
+    - [方法](#方法)
+- [Axios](#axios)
+  - [引入](#引入)
+  - [API](#api)
+  - [config 配置对象](#config-配置对象)
+  - [方法别名](#方法别名)
+  - [配置默认值](#配置默认值)
+    - [全局配置](#全局配置)
+    - [实例配置](#实例配置)
+    - [请求配置](#请求配置)
+    - [配置的优先顺序](#配置的优先顺序)
+  - [并发](#并发)
+  - [拦截器](#拦截器)
+    - [请求拦截器](#请求拦截器)
+    - [响应拦截器](#响应拦截器)
+    - [移除拦截器](#移除拦截器)
+    - [为axios实例添加拦截器](#为axios实例添加拦截器)
+  - [取消请求](#取消请求)
+  - [错误处理](#错误处理)
+  - [axios 预检](#axios-预检)
+- [template 选项](#template-选项)
+- [Vue生命周期](#vue生命周期)
+  - [生命周期图示](#生命周期图示)
+  - [生命周期钩子](#生命周期钩子)
+    - [beforeCreate](#beforecreate)
+    - [created](#created)
+    - [beforeMount](#beforemount)
+    - [mounted](#mounted)
+    - [beforeUpdate](#beforeupdate)
+    - [updated](#updated)
+    - [beforeDestroy](#beforedestroy)
+    - [destroyed](#destroyed)
+- [组件基础](#组件基础)
+  - [组件是什么？](#组件是什么)
+  - [组件注册](#组件注册)
+    - [全局组件](#全局组件)
+    - [局部组件](#局部组件)
+    - [组件名](#组件名)
+    - [组件复用](#组件复用)
+    - [自闭合组件](#自闭合组件)
+    - [组件的data选项](#组件的data选项)
+    - [单个根元素](#单个根元素)
+- [组件_Prop](#组件_prop)
+  - [注册自定义特性](#注册自定义特性)
+  - [Prop的大小写](#prop的大小写)
+  - [传递静态或动态 Prop](#传递静态或动态-prop)
+    - [传递一个对象的所有属性](#传递一个对象的所有属性)
+- [组件_Prop验证](#组件_prop验证)
+- [组件_单向数据流](#组件_单向数据流)
+- [组件_非Prop特性](#组件_非prop特性)
+  - [替换/合并已有的特性](#替换合并已有的特性)
+  - [禁用特性继承](#禁用特性继承)
+- [组件_监听组件事件](#组件_监听组件事件)
+  - [使用事件抛出一个值](#使用事件抛出一个值)
+  - [.native修饰符](#native修饰符)
+  - [事件名](#事件名)
+  - [将原生事件绑定到组件](#将原生事件绑定到组件)
+  - [在组件上使用 v-model](#在组件上使用-v-model)
+  - [.sync 修饰符](#sync-修饰符)
+  - [v-model VS .sync](#v-model-vs-sync)
+- [组件_插槽](#组件_插槽)
+  - [插槽内容](#插槽内容)
+  - [编译作用域](#编译作用域)
+  - [后备内容](#后备内容)
+  - [具名插槽](#具名插槽)
+  - [作用域插槽](#作用域插槽)
+    - [独占默认插槽的缩写语法](#独占默认插槽的缩写语法)
+    - [解构插槽Prop](#解构插槽prop)
+  - [动态插槽名](#动态插槽名)
+  - [具名插槽的缩写](#具名插槽的缩写)
+  - [废弃了的语法](#废弃了的语法)
+    - [带有slot特性的具名插槽](#带有slot特性的具名插槽)
+    - [带有slot-scope特性的作用域插槽](#带有slot-scope特性的作用域插槽)
+- [组件_动态组件](#组件_动态组件)
+  - [基本使用](#基本使用)
+  - [keep-alive](#keep-alive)
+  - [activated & deactivated](#activated--deactivated)
+- [组件_处理边界情况](#组件_处理边界情况)
+  - [访问元素 & 组件](#访问元素--组件)
+    - [访问根实例](#访问根实例)
+    - [访问父级组件实例](#访问父级组件实例)
+    - [依赖注入](#依赖注入)
+    - [访问子组件实例或子元素](#访问子组件实例或子元素)
+  - [程序化的事件侦听器](#程序化的事件侦听器)
+  - [循环引用](#循环引用)
+    - [递归组件](#递归组件)
+    - [组件之间的循环引用](#组件之间的循环引用)
+  - [模板定义的替代品](#模板定义的替代品)
+    - [内联模板](#内联模板)
+    - [X-Template](#x-template)
+  - [控制更新](#控制更新)
+    - [强制更新](#强制更新)
+    - [通过v-once创建低开销的静态组件](#通过v-once创建低开销的静态组件)
+- [组件_通信](#组件_通信)
+  - [prop](#prop)
+  - [$emit](#emit)
+    - [v-model](#v-model)
+    - [.sync](#sync)
+  - [$attrs](#attrs)
+  - [$listeners](#listeners)
+  - [$root](#root)
+  - [$parent](#parent)
+  - [$children](#children)
+  - [ref](#ref)
+  - [provide & inject](#provide--inject)
+  - [eventBus(事件总线)](#eventbus事件总线)
+  - [Vuex](#vuex)
+- [混入](#混入)
+  - [基础](#基础)
+  - [选项合并](#选项合并)
+  - [全局混入](#全局混入)
+- [自定义指令](#自定义指令)
+  - [简介](#简介)
+    - [模拟 v-show](#模拟-v-show)
+      - [函数简写](#函数简写)
+    - [模拟 v-model](#模拟-v-model)
+    - [写一个 v-slice（截取文本框）](#写一个-v-slice截取文本框)
+    - [动态指令参数](#动态指令参数)
+  - [对象字面量](#对象字面量)
+- [过滤器](#过滤器)
+  - [定义过滤器](#定义过滤器)
+  - [参数](#参数)
+  - [过滤器串联](#过滤器串联)
+  - [练习](#练习)
+    - [首字母大写](#首字母大写)
+    - [数字中间加上逗号](#数字中间加上逗号)
+    - [数字添加文字“万”](#数字添加文字万)
+- [安装脚手架](#安装脚手架)
+  - [安装@vue/cli](#安装vuecli)
+  - [快速原型开发](#快速原型开发)
+  - [安装vscode插件](#安装vscode插件)
+- [利用脚手架搭建项目](#利用脚手架搭建项目)
+- [渲染函数](#渲染函数)
+  - [基础](#基础-1)
+  - [节点、树、以及虚拟DOM](#节点树以及虚拟dom)
+    - [虚拟DOM](#虚拟dom)
+  - [createElement参数](#createelement参数)
+    - [深入数据对象](#深入数据对象)
+  - [使用JavaScript代替模板功能](#使用javascript代替模板功能)
+    - [v-if 和 v-for](#v-if-和-v-for)
+    - [v-model](#v-model-1)
+    - [事件&按键修饰符](#事件按键修饰符)
+    - [插槽](#插槽)
+- [JSX](#jsx)
+  - [插值](#插值)
+  - [指令](#指令)
+    - [v-text](#v-text-1)
+    - [v-html](#v-html-1)
+    - [v-show](#v-show-1)
+    - [v-if](#v-if-1)
+    - [v-for](#v-for)
+    - [v-on](#v-on-1)
+    - [v-bind](#v-bind)
+    - [v-model](#v-model-2)
+    - [v-slot](#v-slot)
+    - [v-pre](#v-pre-1)
+    - [v-cloak](#v-cloak)
+    - [v-once](#v-once-1)
+  - [Ref](#ref-1)
+  - [自定义指令](#自定义指令-1)
+  - [过滤器](#过滤器-1)
+  - [插槽](#插槽-1)
+
+<!-- /TOC -->
 ```js
   <div class="demo" v-cloak>
         {{ msg }}
@@ -362,6 +618,7 @@ vm.$delete是Vue.delete的别名
         })
     </script>
 ```
+
 ## v-text
 -  更新元素的textContent
 ```js
@@ -4464,4 +4721,484 @@ yarn global add @vue/cli-service-global
 
 ## 安装vscode插件
 名字：Vetur。用于高亮.vue文件代码
+
+# 利用脚手架搭建项目
+
+1.新建一个文件如zy-vue
+2.在终端中打开
+3.输入命令 vue create zy-vue(注意这里小写)
+4.回车后若不想依赖默认的两个，按下向下键再回车 ，按住空格即选中或去取消选中。回车
+5.配置选择json 回车
+6.保存预设给未来的项目吗（这里选择y保存并取名字,删除预设见9），回车
+7.安装完毕提示 
+cd zy-vue
+npm run serve
+按提示一个一个输入
+8.此时会给我们打开一个地址，一般默认是localhost:8080
+9.删除预设，c盘用户找.vuerc文件，打开到编辑器删除presets对象内容即删除了预设。
+
+# 渲染函数
+
+## 基础
+当我们需要使用JavaScript的编程能力时，可以利用渲染函数。渲染函数比模板更接近于编译器。
+
+例如，我们想要生成一些标题：
+```html
+<h1>Hello world!</h1>
+```
+如果，我们按照之前的方式，那么模板内将会十分冗余。如果此时利用渲染函数，那么代码写起来将会简洁很多。
+```js
+props: {
+  level: {
+    type: Number,
+    required: true
+  }
+},
+render: function (createElement) {
+  return createElement(
+    'h' + this.level,   // 标签名称
+    this.$slots.default // 子节点数组
+  )
+},
+```
+
+## 节点、树、以及虚拟DOM
+在深入渲染函数之前，先来了解一些浏览器的工作原理。例如，下面这段HTML：
+```html
+<div>
+  <h1>My title</h1>
+  Some text content
+  <!-- TODO: Add tagline -->
+</div>
+```
+当浏览器读到这些代码时，它会建立一个**DOM节点树** 来保持追踪所有内容，如同你会画一张家谱树来追踪家庭成员的发展一样。
+以上HTML对应的DOM节点树如下图所示：
+![avatar](https://cn.vuejs.org/images/dom-tree.png)
+
+每个元素都是一个节点。每段文字也是一个节点。甚至注释也都是节点。一个节点就是页面的一个部分。就像家谱树一样，每个节点都可以有孩子节点。
+
+高效地更新所有这些节点是比较困难的，不过幸运的是，我们不需要手动完成这个工作。只需要告诉Vue希望页面上的HTML是什么，例如在模板中：
+```html
+<h1>{{ blogTitle }}</h1>
+```
+或者是在一个渲染函数中：
+```js
+render: function (createElement) {
+  return createElement('h1', this.blogTitle)
+}
+```
+在这两种情况下，Vue 都会自动保持页面的更新，即便 blogTitle 发生了改变。
+
+### 虚拟DOM
+Vue通过建立一个**虚拟DOM**来追踪自己要如何改变真实DOM。例如：
+```js
+return createElement('h1', this.blogTitle);
+```
+createElement 会返回什么呢？
+它不会返回一个实际的DOM元素。更准确的名字可能是：``createNodeDescription``，因为它所包含的信息会告诉Vue页面上需要渲染什么样的节点，包括其子节点的描述信息。我们把这样的节点描述为“虚拟节点（virtual node）”，也常简写它为“VNode”。“虚拟DOM”是我们对由Vue组件树建立起来的整个VNode树的称呼。
+
+## createElement参数
+createElement接收的参数：
+```js
+createElement(标签名(必需), 与模板中属性对应的数据对象(可选), 子级虚拟节点(可选));
+```
+
+### 深入数据对象
+```js
+{
+  // 与 `v-bind:class` 的 API 相同，接受一个字符串、对象或字符串和对象组成的数组
+  class: {
+    foo: true,
+    bar: false
+  },
+  // 与 `v-bind:style` 的 API 相同，接受一个字符串、对象，或对象组成的数组
+  style: {
+    color: 'red',
+    fontSize: '14px',
+  },
+  // 普通的 HTML attribute
+  attrs: {
+    id: 'foo',
+  },
+  // 组件 prop
+  props: {
+    myProp: 'bar',
+  },
+  // DOM属性
+  domProps: {
+    innerHTML: 'baz',
+  },
+  // 事件监听器，不支持如“v-on:keyup.enter”这样的修饰器
+  on: {
+    click: this.onClick
+  },
+  // 仅用于组件，用于监听原生事件，而不是组件内部使用 vm.$emit 触发的事件。
+  nativeOn: {
+    click: this.nativeClickHandler
+  },
+  // 自定义指令。注意，无法对 `binding` 中的 `oldValue`赋值，因为 Vue 已经自动为你进行了同步。
+  directives: [
+    {
+      name: 'my-custom-directive',
+      value: '2',
+      expression: '1 + 1',
+      arg: 'foo',
+      modifiers: {
+        bar: true
+      }
+    }
+  ],
+  // 其它特殊顶层属性
+  key: 'myKey',
+  ref: 'myRef',
+  // 如果在渲染函数中给多个元素都应用了相同的 ref 名，那么 `$refs.myRef` 会变成一个数组。
+  refInFor: true
+  // 作用域插槽，格式为：{ name: props => VNode | Array<VNode> }
+  // 如果组件是其它组件的子组件，需为插槽指定名称
+  slot: 'name-of-slot',
+  scopedSlots: {
+    default: props => createElement('span', props.text)
+  },
+}
+```
+
+## 使用JavaScript代替模板功能
+
+### v-if 和 v-for
+只要在原生的 JavaScript 中可以轻松完成的操作，Vue 的渲染函数就不会提供专有的替代方法。比如，在模板中使用的 v-if 和 v-for：
+```html
+<ul v-if="items.length">
+  <li v-for="item in items">{{ item }}</li>
+</ul>
+<p v-else>No items found.</p>
+```
+这些都可以在渲染函数中用 JavaScript 的 if/else 和 map 来重写：
+```js
+props: ['items'],
+render (createElement) {
+  if(items.length) {
+    return createElement('ul', this.items.map(item => createElement('li', item)))
+  } else {
+    return createElement('p', 'No items found');
+  }
+}
+```
+
+### v-model
+渲染函数中没有与v-model的直接对应---必须自己实现相应的逻辑：
+```html
+<input v-model="value" />
+```
+
+```js
+data () {
+  return {
+    value: 'ceshi',
+  }
+},
+render (createElement) {
+  const self = this;
+  return createElement('input', {
+    attrs: {
+      value: self.value
+    },
+    on: {
+      input (e) {
+        self.value = e.target.value;
+      }
+    },
+  });
+},
+```
+
+### 事件&按键修饰符
+对于 .passive、.capture 和 .once 这些事件修饰符, Vue 提供了相应的前缀可以用于 on：
+修饰符 | 前缀  
+:-: | :-:  
+.passive | & 
+.capture | ! 
+.once | ~ 
+.capture.once 或 .once.capture | ~! 
+
+例如：
+
+```js
+on: {
+  '!click': this.doThisInCapturingMode,
+  '~keyup': this.doThisOnce,
+  '~!mouseover': this.doThisOnceInCapturingMode
+}
+```
+
+对于所有其它的修饰符，私有前缀都不是必须的，因为你可以在事件处理函数中使用事件方法：
+
+修饰符 | 处理函数中的等价操作  
+:-: | :-:  
+.stop | event.stopPropagation()
+.prevent | event.preventDefault() 
+.self | if (event.target !== event.currentTarget) return 
+按键：.enter, .13 | if (event.keyCode !== 13) return <br> 对于别的按键修饰符来说，可将 13 改为另一个按键码
+修饰键：.ctrl, .alt, .shift, .meta | if (!event.ctrlKey) return (将 ctrlKey 分别修改为 altKey、shiftKey 或者 metaKey)
+
+### 插槽
+可以通过 this.$slots 访问静态插槽的内容，每个插槽都是一个 VNode 数组：
+```html
+<div>
+  <slot></slot>
+</div>
+```
+```js
+render: function (createElement) {
+  return createElement('div', this.$slots.default)
+}
+```
+
+也可以通过 this.$scopedSlots 访问作用域插槽，每个作用域插槽都是一个返回若干 VNode 的函数：
+```html
+<div>
+  <slot :text="message"></slot>
+</div>
+```
+```js
+data() {
+  return {
+    msg: 'hello world',
+  }
+},
+render: function (createElement) {
+  return createElement('div', [
+    this.$scopedSlots.default({
+      text: this.msg
+    })
+  ])
+}
+```
+如果要用渲染函数向子组件中传递作用域插槽，可以利用 VNode 数据对象中的 scopedSlots 字段：
+```html
+<div>
+  <base-slot v-slot="slotProps">
+    {{ slotProps.text }}
+  </base-slot>
+</div>
+```
+```js
+render: function (createElement) {
+  return createElement('div', [
+    createElement('base-slot', {
+      // 在数据对象中传递 `scopedSlots`
+      // 格式为 { name: props => VNode | Array<VNode> }
+      scopedSlots: {
+        default: function (props) {
+          return createElement('span', props.text)
+        }
+      }
+    })
+  ])
+}
+```
+
+# JSX 
+在Vue中使用JSX语法。可以让我们回到更接近模板的语法上。
+```js
+render () {
+  return (
+    <h1>这是一个标题</h1>
+  )
+}
+```
+
+## 插值
+```js
+<div>{ this.value }</div>
+```
+
+## 指令
+在JSX中，一些指令并不存在，所以我们可以换一种方式来处理。
+
+### v-text
+```html
+<div domPropsTextContent="<p>i am a p</p>"></div>
+```
+
+### v-html
+```html
+<div domPropsInnerHTML="<p>i am a p</p>"></div>
+```
+
+### v-show
+jsx支持v-show指令：
+```html
+<div v-show={this.show}></div>
+```
+
+### v-if 
+```html
+<!-- v-if -->
+{true && <div>div</div>}
+{true ? <div>div</div> : <span>span</span>}
+```
+
+### v-for
+```html
+{ [1, 2, 3].map(item => (<div key={item}>{ item }</div>))}
+```
+
+### v-on
+```html
+<button onClick={this.handleClick}>点击事件</button>
+<button on-click={this.handleClick}>点击事件</button>
+<!-- 对应@click.native -->
+<cmp-button nativeOnClick={this.handleClick}>原生点击事件</cmp-button>
+<!-- 传递参数 -->
+<button on-click={()=>{ this.handleClick(1)}}>触发点击事件时，传递参数</button>
+```
+### v-bind
+```html
+<input value={this.value} />
+```
+
+在JSX中可以直接使用class="xx"来指定样式类，内联样式可以直接写成style="xxx"
+```html
+<div class="a b" style="font-size: 12px;">Content</div>
+<div class={{a: true, b: false}}>Content</div>
+<div style={{color: 'red', fontSize: '14px'}}>Content</div>
+```
+
+### v-model
+有相应的插件 支持 v-model，所以可以直接使用：
+
+```html
+<input type="text" v-model={this.value} />
+```
+
+### v-slot
+```html
+<my-cmp>
+  默认插槽
+  <div slot="a">具名插槽 a</div>
+</my-cmp>
+```
+
+### v-pre
+### v-cloak
+### v-once
+以上三个指令，不常用，无替代方案
+
+## Ref 
+```html
+<div ref="xxx">xxx</div>
+```
+
+当遍历元素或组件时，如：
+```js
+[1, 2, 3].map(item => <div ref="xx" key={ item }>{ item }</div>)
+```
+会发现从 this.$refs.xxx 中获取的并不是期望的数组值，此时就需要将refInFor属性设置为true了：
+```js
+[1, 2, 3].map(item => <div ref="xx" refInFor={true} key={item}>{ item }</div>)
+```
+
+## 自定义指令
+```js
+render () {
+  // 1
+  return (
+    <input v-splice={{value: this.value, modifiers: {number: true }}}/>
+  )
+
+  // 2
+  const directives = [
+    { 
+      name: 'splice', 
+      value: this.value,  
+      modifiers: {number: true }
+    }
+  ];
+
+  return (
+    <div {...{ directives} }></div>
+  )
+}
+```
+
+## 过滤器
+```html
+<!-- 正常使用过滤器 -->
+<div>{{ msg | capitalize }}</div>
+
+<!-- 在jsx中使用过滤器 -->
+<div>{ this.$options.filters('capitalize')(this.msg)}</div>
+```
+
+
+## 插槽
+模板写法：
+```html
+<!-- 组件内 -->
+<div class="demo">
+  <slot name="header"></slot>
+  <slot></slot>
+</div>
+
+<!-- 使用时 -->
+<my-cmp>
+  default
+  <template v-slot:header>header</template>
+</my-cmp>
+```
+
+JSX写法：
+```html
+<!-- 组件内 -->
+<div class="demo">
+  { this.$slots.header }
+  { this.$slots.default }
+</div>
+
+<!-- 使用时 -->
+<my-cmp>
+  default
+  <template slot="header">header</template>
+</my-cmp>
+```
+
+作用域插槽：
+模板写法：
+```html
+<!-- 组件内 -->
+<div class="demo">
+  <slot :text="'HelloWorld'"></slot>
+</div>
+
+<!-- 使用时 -->
+<my-cmp v-slot="slotProps">
+  {{ slotProps.text }}
+</my-cmp>
+```
+
+JSX写法：
+```html
+<!-- 组件内 -->
+<div class="demo">
+  { 
+    this.$scopedSlots.default({
+      text: 'HelloWorld',
+    }) 
+  }
+</div>
+
+<!-- 使用时 -->
+<div id="app">
+  <base-demo {...{
+    scopedSlots: {
+      default: props => props.text
+    },
+  }}></base-demo>
+</div>
+```
+
+
+
+    
+
 

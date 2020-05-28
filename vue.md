@@ -5260,7 +5260,7 @@ jsx支持v-show指令：
 <!-- 对应@click.native -->
 <cmp-button nativeOnClick={this.handleClick}>原生点击事件</cmp-button>
 <!-- 传递参数 -->
-<button onClick={e => this.handleClick(this.id)}>触发点击事件时，传递参数</button>
+<button on-click={()=>{ this.handleClick(1)}}>触发点击事件时，传递参数</button>
 ```
 
 ### v-bind
