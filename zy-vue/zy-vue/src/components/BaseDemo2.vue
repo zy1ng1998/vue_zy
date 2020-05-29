@@ -1,89 +1,49 @@
 <template>
-  <div class="demo">
-    <button @click="show = !show">click</button>
-    <transition name="box1">
-      <div class="box" v-if="show">hello world</div>
+  <div id="app">
+      <button @click="handleClick">切换</button>
+    <transition>
+   <div :key="keyName">
+       {{ keyName }}
+   </div>
     </transition>
-
-    <transition name="box2">
-      <div class="box" v-if="show">hello world</div>
-    </transition>
-
   </div>
 </template>
 
 <script>
+
+//都是div会就地复用 所以要设置key
+
+// 上面是使用key
 export default {
-  data() {
-    return {
-      show: false
-    };
-  }
-};
+    data(){
+        return{
+            keyName:"dog",
+        }
+    },
+    methods:{
+        handleClick(){
+            let isDog = this.keyName === "dog";
+            this.keyName = isDog ? "cat" : "dog";
+        }
+    },
+
+}
 </script>
 
 <style scoped>
-button {
-  margin-bottom: 10px;
+
+.v-enter,
+.v-leave-to{
+    opacity: 0;
 }
 
-.box {
-  width: 100px;
-  height: 100px;
-  margin-bottom: 10px;
-  line-height: 100px;
-  text-align: center;
-  border: 1px solid red;
-  color: red;
+.v-enter-active,
+.v-leave-active{
+    transition:all .3s;
 }
 
-.box1-enter ,
-.box1-leave-to{
-  opacity: 0;
-  transform: translateX(300px);
+.v-enter-to,
+.v-leave{
+    opacity:1;
 }
-
-.box1-enter-active,
-.box1-leave-active {
-  transition: all 0.5s;
-}
-.box1-enter-to ,
-.box1-leave{
-  opacity: 1;
-  transform: translateX(0px);
-}
-
-
-.box2-enter {
-  opacity: 0;
-  transform: translateX(300px);
-}
-
-.box2-enter-active {
-  transition: all 0.5s;
-}
-.box2-enter-to {
-  opacity: 1;
-  transform: translateX(0px);
-}
-
-.box2-leave {
-  opacity: 1;
-  transform: translateX(0px);
-}
-
-.box2-leave-active {
-  transition: all 0.5s;
-}
-
-.box2-leave-to {
-  opacity: 0;
-  transform: translateY(300px);
-}
-
-/* 离开时
- 开始opacity:1;
-transition: opacity 3s;
- 结束 opacity: 0;
- */
 </style>

@@ -1,59 +1,70 @@
 <template>
   <div class="demo">
-    <button @click="show = !show">click</button>
-    <transition>
-      <div class="box" v-if="show">hello world</div>
+      <button @click="handleClick">切换</button>
+    <transition  mode="in-out">
+   <div class="box" :key="keyName">
+       {{ keyName }}
+   </div>
     </transition>
   </div>
 </template>
 
 <script>
+
+//都是div会就地复用 所以要设置key
+
+// 上面是使用key
 export default {
-  data() {
-    return {
-      show: false
-    };
-  }
-};
+    data(){
+        return{
+            keyName:"dog",
+        }
+    },
+    methods:{
+        handleClick(){
+            let isDog = this.keyName === "dog";
+            this.keyName = isDog ? "cat" : "dog";
+        }
+    },
+
+}
 </script>
 
 <style scoped>
-button {
-  margin-bottom: 10px;
+
+button{
+    display: block;
 }
 
-.box {
-  width: 100px;
-  height: 100px;
-  line-height: 100px;
+.box{
+  position: absolute;
+  display: inline-block;
+  width: 150px;
+  height: 30px;
+  margin-top: 10px;
+  line-height: 30px;
   text-align: center;
-  border: 1px solid red;
-  color: red;
-
+  background-color: gray;
+  color: #fff;
+}
+.v-enter{
+    opacity: 0;
+    transform: translateX(80px);
 }
 
-.v-enter-active{
-    animation: slither 1s;
+.v-enter-active,
+.v-leave-active{
+    transition:all .3s;
 }
 
-@keyframes slither{
-    0% {
-        opacity: 0;
-        transform: translateX(300px) scale(1);
-    }
-    50%{ 
-        opacity: 0.5;
-        transform: translateX(150px) scale(1.5);
-    }
-    100%{
-        opacity: 1;
-        transform: translateX(0px) scale(1);
-    }
-}
+.v-enter-to,
+.v-leave{
+    opacity:1;
+    transform: translateX(0px);
 
-/* 离开时
- 开始opacity:1;
-transition: opacity 3s;
- 结束 opacity: 0;
- */
+}
+.v-leave-to{
+    opacity:0;
+    transform: translateX(-80px);
+}
 </style>
