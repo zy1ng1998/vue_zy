@@ -1,36 +1,20 @@
 
 <template>
-
 <div id="app">
-   <base-level :level="2">
-   biaoti
-   </base-level>
-   </div>
- 
+  <base-demo></base-demo>
+</div>
+
 </template>
+
 <script>
-
-import BaseLevel from './components/BaseLevel.vue';
-
+import BaseDemo from './components/BaseDemo7.vue'
 export default {
-  name: 'App',
-  data(){
-    return {
-      
-    }
+  components:{
+    BaseDemo,
   },
- 
-  components: {
-   
-    BaseLevel,
-  },
-  render(){
-  
-    
-  },
-
-
+}
 </script>
+
 
 <style>
 #app {
