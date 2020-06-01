@@ -1,28 +1,64 @@
 
 <template>
-<div id="app">
-  <base-demo></base-demo>
-</div>
-
+  <div id="app">
+    <div class="nav-box">
+      <div class="logo">青年教育</div>
+      <div class="nav-list">
+        <router-link to="/">首页</router-link>
+        <router-link to="/learn">课程学习</router-link>
+        <router-link to="/student">学员展示</router-link>
+        <router-link to="/about">关于</router-link>
+        <router-link to="/activity">社区</router-link>
+      </div>
+    </div>
+    <div class="container">
+      <router-view></router-view>
+    </div>
+  </div>
 </template>
 
 <script>
-import BaseDemo from './components/BaseDemo2.vue'
+//a标签
+// <router-link to='/'>首页</router-link>
+//tag属性 自定义标签
+// <router-link to='/learn' tag='div'>课程学习</router-link>
+
 export default {
-  components:{
-    BaseDemo,
-  },
-}
+  components: {}
+};
 </script>
 
+<style scoped>
+.nav-box{
+  display: flex;
+  justify-content: space-between;
+  height: 60px;
+  line-height: 60px;
+  background-color: #3385ff;
+}
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+.nav-box .logo{
+  color:#fff;
+}
+.nav-list,.logo,.container{
+  margin: 0px 10px 0 20px;
+
+}
+
+.nav-list a{
+  color:#fff;
+  margin-left: 40px;
+  text-decoration: none;
+}
+
+.nav-list a.router-link-exact-active{
+  font-weight: bold;
+}
+.container{
   margin-top: 60px;
 }
+
+
 </style>
+
+
