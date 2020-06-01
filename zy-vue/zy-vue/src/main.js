@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
-import "velocity-animate";
-import "animate.css";
+import VueRouter from 'vue-router'
+
 
 Vue.config.productionTip = false
 

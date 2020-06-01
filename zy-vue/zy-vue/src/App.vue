@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import BaseDemo from './components/BaseDemo4.vue'
+import BaseDemo from './components/BaseDemo2.vue'
 export default {
   components:{
     BaseDemo,
