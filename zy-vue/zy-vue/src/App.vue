@@ -2,9 +2,10 @@
 <template>
   <div id="app">
     <div class="nav-box">
-      <div class="logo">青年教育</div>
+      <div class="logo" @click="handleClick">青年教育</div>
+      <!-- <router-link to="/home" tag="div" class="logo">青年教育</router-link> -->
       <div class="nav-list">
-        <router-link to="/">首页</router-link>
+        <router-link to="/home">首页</router-link>
         <router-link to="/learn">课程学习</router-link>
         <router-link to="/student">学员展示</router-link>
         <router-link to="/about">关于</router-link>
@@ -24,7 +25,13 @@
 // <router-link to='/learn' tag='div'>课程学习</router-link>
 
 export default {
-  components: {}
+  components: {},
+  methods:{
+    handleClick(){
+      this.$router.push('/home');
+      // this.$router.replace('/home');
+    }
+  },
 };
 </script>
 
@@ -51,7 +58,7 @@ export default {
   text-decoration: none;
 }
 
-.nav-list a.router-link-exact-active{
+.nav-list a.router-link-active{
   font-weight: bold;
 }
 .container{

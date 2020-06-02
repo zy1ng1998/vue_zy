@@ -5,9 +5,15 @@ import Home from './views/Home';
 Vue.use(VueRouter);
 
 const routes =[
+
+  {
+    path:'/',
+    redirect:'/home'
+  },
     {
-      path:'/',
+      path:'/home',
       component:Home,
+      // alias:'/'
     },
     {
       path:'/learn',
@@ -23,8 +29,29 @@ const routes =[
     },
     {
       path:'/activity',
-      component:() =>import('./views/Activity')
+      redirect:'/activity/academic',
+      component:() =>import(/* webpackChunkName: 'academic' */'./views/Activity'),
+      children:[
+        
+        {
+          path:'academic',
+          name:'academic',
+         
+          component:() =>import(/* webpackChunkName: 'academic' */'./views/Academic')
+        },
+        {
+          path:'personal',
+          name:'personal',
+          component:() =>import('./views/Personal')
+        },
+        {
+          path:'download',
+          name:'download',
+          component:() =>import('./views/Download')
+        },
+      ]
     },
+    
   ];
   
    export default new VueRouter({
