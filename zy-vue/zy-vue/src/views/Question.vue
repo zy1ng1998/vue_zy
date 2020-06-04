@@ -19,8 +19,14 @@
 export default {
   beforeRouteUpdate(to ,from , next){
     next();
-    console.log('update')
+    // console.log('update')
   },
+
+  // beforeRouteLeave(to, from, next){
+  //   let isGo = window.confirm("真的要走吗");
+  //   isGo ? next() : next(false);
+  // },
+  
   props:{
     id:{
       type:[ String, Number ],
